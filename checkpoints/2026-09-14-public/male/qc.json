@@ -1,0 +1,787 @@
+{
+  "subject": "male",
+  "flagged_boundaries": [
+    {
+      "boundary": 330,
+      "left": 329,
+      "right": 330,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 5.224
+      },
+      "gap": false,
+      "transform": {
+        "tx": -2.06424044072628,
+        "ty": 3.653488516807556,
+        "scale": 1.003651887267081,
+        "rotation_deg": -1.0333525276899147
+      },
+      "raw_residual": 0.17283013679602213,
+      "corrected_residual": 0.2023853212594986,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9568739678889168,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-330",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 360,
+      "left": 359,
+      "right": 360,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 10.076
+      },
+      "gap": false,
+      "transform": {
+        "tx": 4.650287821888924,
+        "ty": 1.359481394290924,
+        "scale": 1.0063663812921884,
+        "rotation_deg": -0.30046111711742274
+      },
+      "raw_residual": 0.1874990351639736,
+      "corrected_residual": 0.16849611699581146,
+      "improvement": 0.10134941841990548,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9541240808976774,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-360",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 416,
+      "left": 415,
+      "right": 416,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 8.133
+      },
+      "gap": false,
+      "transform": {
+        "tx": 4.366255655884743,
+        "ty": 3.991830587387086,
+        "scale": 1.0070927339279485,
+        "rotation_deg": -1.0483685482905778
+      },
+      "raw_residual": 0.16910318696287957,
+      "corrected_residual": 0.17606575787067413,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9579655387170438,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-416",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 505,
+      "left": 504,
+      "right": 505,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 6.686
+      },
+      "gap": false,
+      "transform": {
+        "tx": -0.15584737062454135,
+        "ty": -6.853494405746462,
+        "scale": 0.9954352842465471,
+        "rotation_deg": 1.9653129862170204
+      },
+      "raw_residual": 0.19417048573252824,
+      "corrected_residual": 0.22734859585762024,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9779752508020574,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-505",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 740,
+      "left": 739,
+      "right": 740,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 4.686
+      },
+      "gap": false,
+      "transform": {
+        "tx": -0.06966086477041245,
+        "ty": -0.4115007221698761,
+        "scale": 0.9987638327977549,
+        "rotation_deg": -0.057899860606635906
+      },
+      "raw_residual": 0.13581305000569277,
+      "corrected_residual": 0.13862083852291107,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9889454737026956,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-740",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 1016,
+      "left": 1015,
+      "right": 1016,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 12.536
+      },
+      "gap": false,
+      "transform": {
+        "tx": -17.170223116874695,
+        "ty": -3.727205276489258,
+        "scale": 0.929987165835405,
+        "rotation_deg": 1.3031679388931239
+      },
+      "raw_residual": 0.25597464955843224,
+      "corrected_residual": 0.32969796657562256,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9169703950761613,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-1016",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 1046,
+      "left": 1045,
+      "right": 1046,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 6.053
+      },
+      "gap": false,
+      "transform": {
+        "tx": -0.5412567704915996,
+        "ty": -4.189112067222596,
+        "scale": 0.9982324454023854,
+        "rotation_deg": 1.1782954750274997
+      },
+      "raw_residual": 0.14289017111492772,
+      "corrected_residual": 0.20184680819511414,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9084522911420929,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-1046",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 1377,
+      "left": 1376,
+      "right": 1377,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 6.369
+      },
+      "gap": false,
+      "transform": {
+        "tx": -2.092907398939133,
+        "ty": 4.539632320404054,
+        "scale": 1.0041782036318627,
+        "rotation_deg": -1.34251910616565
+      },
+      "raw_residual": 0.14949373374470484,
+      "corrected_residual": 0.19461505115032196,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.955498756699458,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-1377",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 1652,
+      "left": 1651,
+      "right": 1652,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 4.893
+      },
+      "gap": false,
+      "transform": {
+        "tx": -8.348313450813269,
+        "ty": 29.22222110629084,
+        "scale": 1.0011796948120455,
+        "rotation_deg": -6.81808461597394
+      },
+      "raw_residual": 0.08837239061746185,
+      "corrected_residual": 0.22747109830379486,
+      "improvement": 0.0,
+      "raw_95th": 0.12361145390913751,
+      "overlap": 0.9008937262189187,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "rgb-1652",
+      "modality": "rgb"
+    },
+    {
+      "boundary": 2,
+      "left": 6,
+      "right": 7,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 5.104
+      },
+      "gap": false,
+      "transform": {
+        "tx": -3.6572254300117457,
+        "ty": -14.690721988677986,
+        "scale": 0.981835958124891,
+        "rotation_deg": 6.380347541618005
+      },
+      "raw_residual": null,
+      "corrected_residual": null,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.0,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-2",
+      "modality": "density"
+    },
+    {
+      "boundary": 231,
+      "left": 235,
+      "right": 236,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": true,
+        "metric_z": 3.213
+      },
+      "gap": false,
+      "transform": {
+        "tx": -22.516965121030807,
+        "ty": 14.071912765502931,
+        "scale": 1.0522397074114154,
+        "rotation_deg": 3.070193815180541
+      },
+      "raw_residual": 0.1511320449835058,
+      "corrected_residual": 0.2897098660469055,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.7965266106442577,
+      "accepted": true,
+      "flagged": false,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-231",
+      "modality": "density"
+    },
+    {
+      "boundary": 255,
+      "left": 259,
+      "right": 260,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": true,
+        "metric_z": 3.617
+      },
+      "gap": false,
+      "transform": {
+        "tx": -14.698744904249907,
+        "ty": 9.906840682029724,
+        "scale": 1.0626550187641828,
+        "rotation_deg": -0.30990026203308657
+      },
+      "raw_residual": 0.1354653519413458,
+      "corrected_residual": 0.19150108098983765,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.7802755376344086,
+      "accepted": true,
+      "flagged": false,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-255",
+      "modality": "density"
+    },
+    {
+      "boundary": 269,
+      "left": 273,
+      "right": 274,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 4.762
+      },
+      "gap": false,
+      "transform": {
+        "tx": -8.250889778137207,
+        "ty": 17.585465908050537,
+        "scale": 1.0334511181375872,
+        "rotation_deg": -3.249109385238193
+      },
+      "raw_residual": 0.18450360366332183,
+      "corrected_residual": 0.2656634449958801,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.7051316794363283,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-269",
+      "modality": "density"
+    },
+    {
+      "boundary": 289,
+      "left": 293,
+      "right": 294,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 18.868
+      },
+      "gap": false,
+      "transform": {
+        "tx": -2.8756923526525497,
+        "ty": 4.133060932159424,
+        "scale": 1.020668770529706,
+        "rotation_deg": -0.9637531145073733
+      },
+      "raw_residual": 0.18927425389542865,
+      "corrected_residual": 0.22639761865139008,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.9032892833027877,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-289",
+      "modality": "density"
+    },
+    {
+      "boundary": 687,
+      "left": 691,
+      "right": 692,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 4.705
+      },
+      "gap": false,
+      "transform": {
+        "tx": 1.7522029671818018,
+        "ty": -1.4795212149620056,
+        "scale": 0.9992651009695259,
+        "rotation_deg": -0.10918458688435735
+      },
+      "raw_residual": 0.07109500377686633,
+      "corrected_residual": 0.08155094087123871,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.9621928742250453,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-687",
+      "modality": "density"
+    },
+    {
+      "boundary": 844,
+      "left": 848,
+      "right": 849,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": true,
+        "acquisition_change": true,
+        "fov_change": false,
+        "metric_z": 19.949
+      },
+      "gap": false,
+      "transform": {
+        "tx": 1.4568810611963272,
+        "ty": -0.6915569305419922,
+        "scale": 0.9989921726616194,
+        "rotation_deg": 0.5238304842515764
+      },
+      "raw_residual": 0.10675157851435652,
+      "corrected_residual": 0.106023870408535,
+      "improvement": 0.0068168369587494745,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.9638081350252862,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-844",
+      "modality": "density"
+    },
+    {
+      "boundary": 1089,
+      "left": 1093,
+      "right": 1094,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 25.325
+      },
+      "gap": false,
+      "transform": {
+        "tx": -0.7190401814877987,
+        "ty": 0.11480093002319336,
+        "scale": 0.9956058206059327,
+        "rotation_deg": 0.14005483734400442
+      },
+      "raw_residual": 0.036656002943662204,
+      "corrected_residual": 0.038744114339351654,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.9653501843075303,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-1089",
+      "modality": "density"
+    },
+    {
+      "boundary": 1216,
+      "left": 1220,
+      "right": 1221,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 5.639
+      },
+      "gap": false,
+      "transform": {
+        "tx": 0.688818909227848,
+        "ty": -2.815029740333557,
+        "scale": 1.001485104992888,
+        "rotation_deg": 0.283669593813339
+      },
+      "raw_residual": 0.05090447583424906,
+      "corrected_residual": 0.09421775490045547,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.9182959456678329,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-1216",
+      "modality": "density"
+    },
+    {
+      "boundary": 1337,
+      "left": 1341,
+      "right": 1342,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 4.697
+      },
+      "gap": false,
+      "transform": {
+        "tx": -1.7667684964835644,
+        "ty": 4.082053303718567,
+        "scale": 0.9960274858222143,
+        "rotation_deg": -0.23972995738742925
+      },
+      "raw_residual": 0.1857276548073439,
+      "corrected_residual": 0.21562939882278442,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.8739270984282689,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-1337",
+      "modality": "density"
+    },
+    {
+      "boundary": 1350,
+      "left": 1354,
+      "right": 1355,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 4.932
+      },
+      "gap": false,
+      "transform": {
+        "tx": -4.137492999434471,
+        "ty": -1.6782004833221436,
+        "scale": 0.9985068309839359,
+        "rotation_deg": 1.1675104710935462
+      },
+      "raw_residual": 0.14638761880671225,
+      "corrected_residual": 0.17929548025131226,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.8563857069584544,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-1350",
+      "modality": "density"
+    },
+    {
+      "boundary": 1653,
+      "left": 1657,
+      "right": 1658,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": true,
+        "acquisition_change": true,
+        "fov_change": false,
+        "metric_z": 106.964
+      },
+      "gap": false,
+      "transform": {
+        "tx": 6.9039005702361465,
+        "ty": -23.04218664765358,
+        "scale": 1.0035573801990623,
+        "rotation_deg": -0.06530339029804899
+      },
+      "raw_residual": 0.4056416159152575,
+      "corrected_residual": 0.1042199656367302,
+      "improvement": 0.7430737834884703,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.8642459073493556,
+      "accepted": true,
+      "flagged": false,
+      "applied_transform": {
+        "tx": 6.9039005702361465,
+        "ty": -23.04218664765358,
+        "scale": 1.0035573801990623,
+        "rotation_deg": -0.06530339029804899
+      },
+      "id": "density-1653",
+      "modality": "density"
+    },
+    {
+      "boundary": 1705,
+      "left": 1709,
+      "right": 1710,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 5.038
+      },
+      "gap": false,
+      "transform": {
+        "tx": 0.33133660163730383,
+        "ty": -1.054245501756668,
+        "scale": 1.0039890744174644,
+        "rotation_deg": 0.09583625592379083
+      },
+      "raw_residual": 0.14072153874061025,
+      "corrected_residual": 0.17326080799102783,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.8874100441074054,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-1705",
+      "modality": "density"
+    },
+    {
+      "boundary": 1876,
+      "left": 1880,
+      "right": 1881,
+      "reason": {
+        "metadata_gap": false,
+        "position_jump": false,
+        "acquisition_change": false,
+        "fov_change": false,
+        "metric_z": 7.548
+      },
+      "gap": false,
+      "transform": {
+        "tx": 0.5322457849979401,
+        "ty": -29.44108486175537,
+        "scale": 1.0406762455106031,
+        "rotation_deg": 1.879612147763003
+      },
+      "raw_residual": 0.0821196289273753,
+      "corrected_residual": 0.27254366874694824,
+      "improvement": 0.0,
+      "raw_95th": 0.10074298282021935,
+      "overlap": 0.5747969609641079,
+      "accepted": false,
+      "flagged": true,
+      "applied_transform": {
+        "tx": 0.0,
+        "ty": 0.0,
+        "scale": 1.0,
+        "rotation_deg": 0.0
+      },
+      "id": "density-1876",
+      "modality": "density"
+    }
+  ]
+}

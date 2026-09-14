@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "subject": "male",
+  "anchors": [
+    {
+      "slot": 1,
+      "color_depth": 0.07,
+      "color_frame": 131,
+      "scale_x": 1,
+      "scale_y": 1,
+      "tx": 0,
+      "ty": -0.5,
+      "updated_at": "2026-09-10T16:41:19.121Z"
+    },
+    {
+      "slot": 2,
+      "color_depth": 0.11,
+      "color_frame": 206,
+      "scale_x": 1.017,
+      "scale_y": 1,
+      "tx": 1,
+      "ty": 0,
+      "updated_at": "2026-09-10T16:41:37.737Z"
+    },
+    {
+      "slot": 3,
+      "color_depth": 0.16,
+      "color_frame": 300,
+      "scale_x": 1,
+      "scale_y": 1,
+      "tx": 2.25,
+      "ty": 0,
+      "updated_at": "2026-09-10T16:37:54.247Z"
+    },
+    {
+      "slot": 4,
+      "color_depth": 0.24,
+      "color_frame": 450,
+      "scale_x": 0.875,
+      "scale_y": 1.002,
+      "tx": 0,
+      "ty": 0.5,
+      "updated_at": "2026-09-10T16:39:09.325Z"
+    },
+    {
+      "slot": 5,
+      "color_depth": 0.35,
+      "color_frame": 657,
+      "scale_x": 0.915,
+      "scale_y": 0.995,
+      "tx": -2,
+      "ty": -0.25,
+      "updated_at": "2026-09-10T16:40:56.055Z"
+    },
+    {
+      "slot": 6,
+      "color_depth": 0.48,
+      "color_frame": 901,
+      "scale_x": 1,
+      "scale_y": 0.984,
+      "tx": 0,
+      "ty": -1.5,
+      "updated_at": "2026-09-10T16:42:21.343Z"
+    },
+    {
+      "slot": 7,
+      "color_depth": 0.61,
+      "color_frame": 1145,
+      "scale_x": 1,
+      "scale_y": 1,
+      "tx": 0,
+      "ty": 0,
+      "updated_at": "2026-09-10T16:42:31.822Z"
+    },
+    {
+      "slot": 8,
+      "color_depth": 0.73,
+      "color_frame": 1370,
+      "scale_x": 1.066,
+      "scale_y": 1.15,
+      "tx": 3.5,
+      "ty": 13.25,
+      "updated_at": "2026-09-10T16:44:08.059Z"
+    },
+    {
+      "slot": 9,
+      "color_depth": 0.84,
+      "color_frame": 1577,
+      "scale_x": 1,
+      "scale_y": 1,
+      "tx": 0,
+      "ty": 0,
+      "updated_at": "2026-09-10T16:44:18.364Z"
+    },
+    {
+      "slot": 10,
+      "color_depth": 0.92,
+      "color_frame": 1727,
+      "scale_x": 1,
+      "scale_y": 1,
+      "tx": 0,
+      "ty": 0,
+      "updated_at": "2026-09-10T16:44:23.223Z"
+    }
+  ]
+}

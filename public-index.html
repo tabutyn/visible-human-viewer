@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="An independent, experimental anatomy viewer. Contains real human cadaver imagery behind an explicit content warning." />
+    <title>Visible Human — Anatomy Viewer</title>
+    <link rel="stylesheet" href="/viewer.css" />
+  </head>
+  <body data-active-tab="medical" data-release-mode="static">
+    <section id="content-warning" aria-labelledby="warning-title">
+      <div class="warning-card">
+        <span class="eyebrow">Anatomy education · 18+</span>
+        <h1 id="warning-title">This viewer shows a real human cadaver.</h1>
+        <p>Photographic cross-sections and 3D reconstructions show exposed tissue, internal organs, and anatomical nudity. These are real donated human bodies, not illustrations. The images may be disturbing.</p>
+        <p class="research-disclaimer">Experimental educational and research software. Alignment may be inaccurate and anatomy may be missing. Not for diagnosis, treatment, or surgical planning.</p>
+        <form id="content-consent">
+          <label><input id="confirm-age" type="checkbox" required /> I confirm that I am 18 or older.</label>
+          <label><input id="confirm-content" type="checkbox" required /> I understand the warning and choose to view real cadaver imagery.</label>
+          <small>Self-confirmation only. No birth date or identity information is collected.</small>
+          <div class="button-row"><button id="leave-viewer" type="button" class="secondary">Do not enter</button><button id="enter-viewer" type="submit" disabled>Enter viewer</button></div>
+        </form>
+        <output id="consent-status" aria-live="polite"></output>
+        <p class="source-credit">Courtesy of the U.S. National Library of Medicine.<br />Independent project; not endorsed by NLM. Modified data do not represent NLM's most current or most accurate data. <a href="/NOTICE.md" target="_blank" rel="noopener">Data &amp; limitations</a> · <a href="/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+        <noscript>JavaScript is required. No anatomical images are loaded on this page.</noscript>
+      </div>
+    </section>
+    <main class="viewer-shell" hidden>
+      <div class="public-runtime-stubs" hidden>
+        <section id="alignment-workspace"></section><div id="alignment-controls"></div><div id="medical-controls"></div>
+        <button id="alignment-tab"></button><button id="align3d-tab"></button><button id="medical-tab"></button>
+        <select id="subject-select" aria-label="Subject"></select><div><div class="calibration-panel"></div></div>
+        <div id="medical-knot-editor-host"></div><input id="knot-blend" value="50" /><output id="selected-knot-label"></output>
+      </div>
+      <section id="medical-workspace" class="workspace medical-workspace" aria-label="Medical rendering">
+        <figure class="medical-viewport volume-viewport"><canvas id="volume-canvas" aria-label="Three-dimensional CT and RGB volume"></canvas></figure>
+        <aside class="medical-preset-overlay overlay-panel">
+          <label>Preset<select id="volume-preset" aria-label="Transfer-function preset"><option value="bone">Bone</option><option value="soft">Soft tissue</option><option value="lung">Lung</option><option value="body">Skin / body</option><option value="mip">MIP</option><option value="custom">Custom</option></select></label>
+          <label id="custom-density-control" class="custom-density-control" hidden>Density <input id="custom-density" type="range" min="-64" max="1870" step="1" value="-64" /><output id="custom-density-value">−64 HU</output></label>
+          <output id="volume-message" aria-live="polite">Opening volume…</output>
+          <button id="volume-more-detail" class="secondary" type="button" hidden>Download more detail</button>
+          <button id="volume-retry" class="secondary" type="button" hidden>Retry download</button>
+        </aside>
+        <div class="medical-hidden-controls" hidden>
+          <button id="volume-build"></button><output id="transfer-selection">—</output><canvas id="transfer-canvas" width="280" height="190"></canvas>
+          <div id="transfer-colors"></div><button id="transfer-add-color"></button><button id="transfer-reset"></button>
+          <input id="volume-window-center" type="number" value="400" /><input id="volume-window-width" type="number" value="1800" /><output id="volume-performance">0 FPS · 0 MiB</output>
+        </div>
+      </section>
+    </main>
+    <aside id="release-credit" hidden><span>Courtesy of the U.S. National Library of Medicine · Experimental; not for diagnosis.</span><a href="/NOTICE.md" target="_blank" rel="noopener">About / MIT</a><button id="hide-imagery" class="secondary" type="button">Hide imagery</button></aside>
+    <script type="module" src="/entry.mjs"></script>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="An independent, experimental anatomy viewer. Contains real human cadaver imagery behind an explicit content warning." />
+    <title>Visible Human — Anatomy Viewer</title>
+    <link rel="stylesheet" href="/viewer.css" />
+  </head>
+  <body data-active-tab="alignment">
+    <section id="content-warning" aria-labelledby="warning-title">
+      <div class="warning-card">
+        <span class="eyebrow">Anatomy education · 18+</span>
+        <h1 id="warning-title">This viewer shows a real human cadaver.</h1>
+        <p>Photographic cross-sections and 3D reconstructions show exposed tissue, internal organs, and anatomical nudity. These are real donated human bodies, not illustrations. The images may be disturbing.</p>
+        <p class="research-disclaimer">Experimental educational and research software. Alignment may be inaccurate and anatomy may be missing. Not for diagnosis, treatment, or surgical planning.</p>
+        <form id="content-consent">
+          <label><input id="confirm-age" type="checkbox" required /> I confirm that I am 18 or older.</label>
+          <label><input id="confirm-content" type="checkbox" required /> I understand the warning and choose to view real cadaver imagery.</label>
+          <small>Self-confirmation only. No birth date or identity information is collected.</small>
+          <div class="button-row"><button id="leave-viewer" type="button" class="secondary">Do not enter</button><button id="enter-viewer" type="submit" disabled>Enter viewer</button></div>
+        </form>
+        <output id="consent-status" aria-live="polite"></output>
+        <p class="source-credit">Courtesy of the U.S. National Library of Medicine.<br />Independent project; not endorsed by NLM. Modified data do not represent NLM's most current or most accurate data. <a href="/NOTICE.md" target="_blank" rel="noopener">Data &amp; limitations</a> · <a href="/LICENSE" target="_blank" rel="noopener">MIT License</a></p>
+        <noscript>JavaScript is required. No anatomical images are loaded on this page.</noscript>
+      </div>
+    </section>
+    <main class="viewer-shell" hidden>
+      <header class="topbar overlay-panel">
+        <div class="title-block">
+          <span class="eyebrow">NLM Visible Human</span>
+          <nav class="app-tabs" role="tablist" aria-label="Viewer mode">
+            <button id="alignment-tab" class="active" type="button" role="tab" aria-selected="true" aria-controls="alignment-workspace">Alignment</button>
+            <button id="align3d-tab" type="button" role="tab" aria-selected="false" aria-controls="medical-workspace">3D Alignment</button>
+            <button id="medical-tab" type="button" role="tab" aria-selected="false" aria-controls="medical-workspace">Medical Rendering</button>
+          </nav>
+        </div>
+        <label class="subject-control">Subject<select id="subject-select" aria-label="Subject"></select></label>
+        <div id="alignment-controls" class="controls-row">
+          <label>Profile<select id="registration-profile" aria-label="Registration profile"><option value="baseline">Baseline</option></select></label>
+          <label>View<select id="compare-mode" aria-label="Comparison mode"><option value="blend">Blend</option><option value="edges">Edges</option><option value="checker">Checkerboard</option><option value="split">Side by side</option></select></label>
+          <label>CT window<select id="window-preset" aria-label="Density window"><option value="full">Full</option><option value="soft">Soft tissue</option><option value="lung">Lung</option><option value="bone">Bone</option></select></label>
+          <label class="toggle-control"><input id="registration-toggle" type="checkbox" checked /><span class="toggle-track"><span></span></span>Align</label>
+          <label class="blend-control">Blend<input id="blend-slider" type="range" min="0" max="100" value="0" /></label>
+        </div>
+        <div id="medical-controls" hidden></div>
+      </header>
+
+      <section id="alignment-workspace" class="workspace" aria-labelledby="alignment-tab">
+      <canvas id="viewer-canvas" aria-label="Registered Visible Human slice viewer"></canvas>
+      <div id="landmark-markers" aria-hidden="true"></div>
+
+      <aside class="calibration-panel overlay-panel" aria-label="Knot alignment editor" tabindex="-1">
+        <div class="panel-heading"><strong>Knot / slice editor</strong><output id="calibration-count" hidden>—</output></div>
+        <div class="button-row knot-editor-navigation"><button id="editor-previous-knot" class="secondary" type="button">Previous Knot</button><button id="editor-next-knot" class="secondary" type="button">Next Knot</button></div>
+        <output id="selected-knot-label" class="selected-knot-label" aria-live="polite">Loading knots…</output>
+        <label class="knot-blend-control live-only">CT / RGB<input id="knot-blend" type="range" min="0" max="100" value="50" aria-label="Selected knot CT and RGB blend" /></label>
+        <div class="frame-edit" hidden>
+          <label>RGB <input id="review-color-frame" type="number" min="0" step="1" value="0" /></label>
+          <button id="edit-current-frame" class="secondary" type="button">Load</button>
+        </div>
+        <div class="frame-edit ct-edit">
+          <label>Z / CT frame <input id="review-ct-frame" type="number" min="0" step="0.1" value="0" /></label>
+          <div class="stepper"><button id="ct-previous" class="secondary" type="button" aria-label="Previous CT plane">−</button><button id="ct-next" class="secondary" type="button" aria-label="Next CT plane">+</button></div>
+        </div>
+
+        <div class="transform-grid">
+          <label>X scale<input id="calibration-scale_x" type="number" min="0.25" max="4" step="0.001" value="1" /></label>
+          <label>Y scale<input id="calibration-scale_y" type="number" min="0.25" max="4" step="0.001" value="1" /></label>
+          <label>X position<input id="calibration-tx" type="number" min="-512" max="512" step="0.25" value="0" /></label>
+          <label>Y position<input id="calibration-ty" type="number" min="-304" max="304" step="0.25" value="0" /></label>
+          <label class="rotation-field">Rotation<input id="calibration-rotation_deg" type="number" min="-20" max="20" step="0.05" value="0" /></label>
+        </div>
+
+        <div class="button-row"><button id="auto-align" type="button" disabled>Auto Align</button><button id="undo-auto-align" class="secondary" type="button" disabled>Undo Auto</button></div>
+        <div class="primary-actions"><button id="save-calibration" type="button" disabled>Select a timeline knot</button><button id="reset-calibration" class="secondary" type="button">Reset</button></div>
+        <output id="calibration-status" class="panel-status" aria-live="polite"></output>
+
+        <details id="suggestion-notes" hidden><summary>Fit notes</summary><div></div></details>
+      </aside>
+
+      <div class="legacy-review-controls" hidden>
+          <label>Frame<select id="calibration-anchor" aria-label="Saved alignment frame"></select></label>
+          <label class="check"><input id="calibration-preview" type="checkbox" checked />Show saved</label>
+          <label class="check"><input id="review-interpolate" type="checkbox" checked />Preview nearby interpolation</label>
+          <button id="clear-calibration" class="danger" type="button">Remove saved frame</button>
+          <div class="button-row"><button id="match-landmarks" class="secondary" type="button">Landmarks</button><button id="fit-landmarks" type="button" disabled>Fit points</button></div>
+          <div class="button-row"><button id="suggest-alignment" class="secondary" type="button">Outline fit</button><button id="undo-landmark" class="secondary" type="button">Undo point</button></div>
+          <output id="landmark-status"></output>
+      </div>
+
+      <aside class="review-panel overlay-panel">
+        <div class="panel-heading"><strong>Working knots</strong><output id="human-anchor-status">0 knots</output></div>
+        <label class="stacked-label">Knot<select id="human-anchor-audit"></select></label>
+        <div class="queue-actions"><button id="human-anchor-previous" class="secondary" type="button">Previous</button><button id="human-anchor-open" type="button">Open</button><button id="human-anchor-next" class="secondary" type="button">Next</button></div>
+        <output id="human-anchor-detail" class="panel-status"></output>
+        <button id="human-anchor-delete" class="danger" type="button">Delete selected anchor</button>
+
+        <details>
+          <summary>Candidate controls</summary>
+          <output id="candidate-status">No candidate</output>
+          <button id="optimize-alignment" type="button">Rebuild candidate</button>
+          <button id="promote-candidate" class="secondary" type="button" disabled>Promote candidate</button>
+          <label class="stacked-label">Pending point<select id="z-suggestion"></select></label>
+          <div class="queue-actions"><button id="control-previous" class="secondary" type="button">Previous</button><button id="use-z-suggestion" type="button">Open</button><button id="control-next" class="secondary" type="button">Next</button></div>
+          <output id="z-suggestion-detail" class="panel-status"></output>
+          <button id="reject-z-suggestion" class="danger" type="button">Skip selected point</button>
+        </details>
+
+        <details>
+          <summary>Other flagged regions</summary>
+          <output id="problem-summary"></output>
+          <button id="scan-alignment" type="button">Rescan</button>
+          <label class="stacked-label">Region<select id="problem-select"></select></label>
+          <div class="button-row"><button id="problem-previous" class="secondary" type="button">Previous</button><button id="problem-next" class="secondary" type="button">Next</button></div>
+          <output id="problem-detail"></output>
+        </details>
+
+        <details id="boundary-tools">
+          <summary>Acquisition boundaries</summary>
+          <label>Boundary<select id="review-boundary"></select></label>
+          <div class="transform-grid boundary-grid">
+            <label>X move<input id="review-tx" type="number" step="0.1" value="0" /></label>
+            <label>Y move<input id="review-ty" type="number" step="0.1" value="0" /></label>
+            <label>Scale<input id="review-scale" type="number" step="0.0001" value="1" /></label>
+            <label>Rotation<input id="review-rotation_deg" type="number" step="0.01" value="0" /></label>
+          </div>
+          <label class="check"><input id="raw-flicker" type="checkbox" />Raw/corrected flicker</label>
+          <button id="save-override" type="button">Save and rebuild</button>
+          <output id="review-metrics"></output>
+        </details>
+      </aside>
+
+      <div class="image-status overlay-panel" aria-live="polite"><span id="loading-status">Loading…</span></div>
+      <footer class="bottombar overlay-panel">
+        <output id="depth-index" for="depth-slider">0 / 0</output>
+        <div class="depth-column">
+          <div class="depth-track"><div id="interpolation-ticks" aria-label="Spatial interpolation knots"></div><input id="depth-slider" type="range" min="0" max="10000" value="0" step="1" aria-label="Slice depth" /></div>
+          <div class="knot-navigation">
+            <button id="previous-knot" class="secondary" type="button">← knot</button>
+            <div class="knot-context"><output id="knot-context">No interpolation profile</output><small id="knot-values"></small></div>
+            <button id="next-knot" class="secondary" type="button">knot →</button>
+          </div>
+        </div>
+        <span id="depth-total">0</span>
+      </footer>
+      </section>
+
+      <section id="medical-workspace" class="workspace medical-workspace" aria-labelledby="medical-tab" hidden>
+        <figure class="medical-viewport volume-viewport">
+          <canvas id="volume-canvas" aria-label="Three-dimensional CT and RGB volume"></canvas>
+        </figure>
+
+        <aside class="medical-preset-overlay overlay-panel">
+          <label>Preset<select id="volume-preset" aria-label="Transfer-function preset"><option value="bone">Bone</option><option value="soft">Soft tissue</option><option value="lung">Lung</option><option value="body">Skin / body</option><option value="mip">MIP</option><option value="custom">Custom</option></select></label>
+          <label id="custom-density-control" class="custom-density-control" hidden>Density <input id="custom-density" type="range" min="-64" max="1870" step="1" value="-64" /><output id="custom-density-value">−64 HU</output></label>
+          <output id="volume-message" aria-live="polite">Opening volume…</output>
+          <button id="volume-more-detail" class="secondary" type="button" hidden>Download more detail</button>
+          <button id="volume-retry" class="secondary" type="button" hidden>Retry download</button>
+        </aside>
+
+        <aside id="medical-knot-editor-host" hidden></aside>
+
+        <div class="medical-hidden-controls" hidden>
+          <button id="volume-build" type="button">Build</button>
+          <output id="transfer-selection">—</output>
+          <canvas id="transfer-canvas" width="280" height="190"></canvas>
+          <div id="transfer-colors"></div>
+          <button id="transfer-add-color" type="button">Add</button><button id="transfer-reset" type="button">Reset</button>
+          <input id="volume-window-center" type="number" value="400" /><input id="volume-window-width" type="number" value="1800" />
+          <output id="volume-performance">0 FPS · 0 MiB</output>
+        </div>
+      </section>
+    </main>
+    <aside id="release-credit" hidden><span>Courtesy of the U.S. National Library of Medicine · Experimental; not for diagnosis.</span><a href="/NOTICE.md" target="_blank" rel="noopener">About / MIT</a><button id="hide-imagery" class="secondary" type="button">Hide imagery</button></aside>
+    <script type="module" src="/entry.mjs"></script>
+  </body>
+</html>

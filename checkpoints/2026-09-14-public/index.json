@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "visible-human-metadata-checkpoint",
+  "created_at": "2026-09-14T12:42:26.900450+00:00",
+  "contents": "allowlisted-current-json-metadata-only",
+  "source_layout": "Processed/v1/{subject}/{file}",
+  "files_preserved_byte_for_byte": true,
+  "warnings": [
+    "No photographs, CT pixels, volume bricks, caches, or edit history are included.",
+    "This is an archival snapshot, not an anatomical validation or an automatic restore procedure.",
+    "Restore only against the exact matching source inputs; do not rewrite input hashes or mark stale profiles current.",
+    "Stop editing while exporting if a transactionally consistent snapshot across multiple files is required."
+  ],
+  "subjects": {
+    "male": {
+      "status": "experimental",
+      "warnings": [
+        "Experimental alignment; not clinically validated.",
+        "Saved human corrections and automated candidates are distinct evidence, not proof of anatomical accuracy."
+      ],
+      "files": [
+        {
+          "path": "male/manifest.json",
+          "size_bytes": 303711,
+          "sha256": "aee8318270b781686629e5ee399c04e04e3e9f86a63b22fbd2d6666be143851b"
+        },
+        {
+          "path": "male/corrections.json",
+          "size_bytes": 444196,
+          "sha256": "cfa92bc73fa572b41b7fc3123627adc834066d83770e543735bf9d8d07cd94fd"
+        },
+        {
+          "path": "male/overrides.json",
+          "size_bytes": 38,
+          "sha256": "7c3b3a82d17f28069b95834021401d39a3fab697b54dceda7868218d8a63abf4"
+        },
+        {
+          "path": "male/alignment.json",
+          "size_bytes": 47039,
+          "sha256": "25845a17b268eda30c32b5bb34f438876c9ede85752d97a12d1853b4e2e3a686"
+        },
+        {
+          "path": "male/alignment-candidate-v2.json",
+          "size_bytes": 129561,
+          "sha256": "39229982f78e361dfeada551aff73f13ec61b900e19e62416b702a19f082b0fd"
+        },
+        {
+          "path": "male/reviewed-alignment.json",
+          "size_bytes": 36418,
+          "sha256": "26527f42a7f23c6351040e4e94ecf45a9edbd82b009b11b905a3b07c3d0462f5"
+        },
+        {
+          "path": "male/manual-alignment.json",
+          "size_bytes": 2117,
+          "sha256": "6161b8122ca7ea204ab508d09e64e2f8fc346171d84c00fafe5a2d8ffd5ec4b9"
+        },
+        {
+          "path": "male/medical-view.json",
+          "size_bytes": 356,
+          "sha256": "52b0a6b7d7783f09b08ddee80214d2d71140e288ba3468c20cd88712c171101f"
+        },
+        {
+          "path": "male/alignment-qc.json",
+          "size_bytes": 30090,
+          "sha256": "85360f1a6c38d63e8b67124ea13f8888afd130ca001cdffdc99b1ff88446cb4c"
+        },
+        {
+          "path": "male/qc.json",
+          "size_bytes": 20281,
+          "sha256": "ed897d4c05cc76eadb5f89d2f1438f2fb773243eaf971d547172df47202887d1"
+        },
+        {
+          "path": "male/volume-v1/manifest.json",
+          "size_bytes": 170283,
+          "sha256": "c86503a739fcc26c42c931284bba5a3ee800219322426965a8f4655376fa83bb"
+        },
+        {
+          "path": "male/rgb-volume-v1/manifest.json",
+          "size_bytes": 106243,
+          "sha256": "e05dea01bcf56bb58ae02cfbdff4ccace3681e6bc217c38c1173a0c8f7aa53fb"
+        }
+      ],
+      "missing_optional_files": []
+    }
+  },
+  "metadata_file_count": 12,
+  "metadata_bytes": 1290333
+}

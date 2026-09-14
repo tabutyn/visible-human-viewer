@@ -1,0 +1,19 @@
+{
+  "name": "visible-human-public-release",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test tests/test_*.mjs",
+    "r2:dry-run": "node publish_visible_human_r2.mjs --dry-run",
+    "r2:apply": "node publish_visible_human_r2.mjs --apply",
+    "r2:verify": "node verify_visible_human_r2.mjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1097.0",
+    "@smithy/node-http-handler": "^4.9.12"
+  },
+  "devDependencies": {
+    "wrangler": "^4.37.1"
+  }
+}

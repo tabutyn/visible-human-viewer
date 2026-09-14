@@ -1,0 +1,7 @@
+# Tested with CPython 3.12.  Keep these pins together: OpenCV wheels are tied
+# to the NumPy ABI and SciPy's supported NumPy range.
+numpy==2.2.6
+opencv-python-headless==4.12.0.88
+scipy==1.15.3
+Pillow==11.2.1
+pytest==8.3.5
