@@ -23,6 +23,20 @@ export function clamp(value, low, high) {
   return Math.max(low, Math.min(high, value));
 }
 
+export function planeNormalFromAngles(azimuthDeg, inclinationDeg) {
+  const azimuth = azimuthDeg * Math.PI / 180;
+  const inclination = inclinationDeg * Math.PI / 180;
+  const horizontal = Math.cos(inclination);
+  return [horizontal * Math.cos(azimuth), horizontal * Math.sin(azimuth), Math.sin(inclination)];
+}
+
+export function planeAnglesFromNormal(normal) {
+  const length = Math.hypot(...normal);
+  if (!Number.isFinite(length) || length < 1e-9) throw new RangeError("Plane normal must be nonzero");
+  return [Math.atan2(normal[1], normal[0]) * 180 / Math.PI,
+    Math.asin(clamp(normal[2] / length, -1, 1)) * 180 / Math.PI];
+}
+
 export function interpolation(points, x, component) {
   const values = [...points].sort((left, right) => left.hu - right.hu);
   if (!values.length) return component === "opacity" ? 0 : [0, 0, 0];

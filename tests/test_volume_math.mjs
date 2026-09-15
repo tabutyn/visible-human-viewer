@@ -8,6 +8,8 @@ import {
   brickOpacity,
   canvasPlaneScale,
   chooseVolumeLevel,
+  planeAnglesFromNormal,
+  planeNormalFromAngles,
   transferLut,
   volumeBytes,
 } from "../volume-math.mjs";
@@ -44,6 +46,15 @@ test("unknown CT brick HU bounds never cull released anatomy", () => {
 test("MPR plane scale preserves physical aspect", () => {
   assert.deepEqual(canvasPlaneScale(2,[512,512,1000],[1,1,1],1),[1,1]);
   assert.deepEqual(canvasPlaneScale(1,[512,512,1024],[1,1,1],1),[.5,1]);
+});
+
+test("cross-section angles preserve the plane normal throughout the sphere", () => {
+  for(const [azimuth,inclination] of [[0,0],[45,30],[-179.4,1.6],[90,-80],[0,90]]){
+    const normal=planeNormalFromAngles(azimuth,inclination);
+    const recovered=planeNormalFromAngles(...planeAnglesFromNormal(normal));
+    assert.ok(normal.every((value,index)=>Math.abs(value-recovered[index])<1e-12));
+  }
+  assert.throws(()=>planeAnglesFromNormal([0,0,0]),/nonzero/);
 });
 
 test("WGSL avoids non-portable writes to vector components", async () => {

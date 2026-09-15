@@ -8,6 +8,8 @@ import {
   chooseVolumeLevel,
   clamp,
   displayBytes,
+  planeAnglesFromNormal,
+  planeNormalFromAngles,
   transferLut,
   volumeBytes,
 } from "/volume-math.mjs";
@@ -40,6 +42,14 @@ const windowWidthInput = document.querySelector("#volume-window-width");
 const customDensityControl = document.querySelector("#custom-density-control");
 const customDensityInput = document.querySelector("#custom-density");
 const customDensityValue = document.querySelector("#custom-density-value");
+const planeAzimuthInput = document.querySelector("#plane-azimuth");
+const planeInclinationInput = document.querySelector("#plane-inclination");
+const planeDepthInput = document.querySelector("#plane-depth");
+const planeAzimuthValue = document.querySelector("#plane-azimuth-value");
+const planeInclinationValue = document.querySelector("#plane-inclination-value");
+const planeDepthValue = document.querySelector("#plane-depth-value");
+const medicalInfoButton = document.querySelector("#medical-info-toggle");
+const medicalControlsGuide = document.querySelector("#medical-controls-guide");
 const canvases = { volume: document.querySelector("#volume-canvas") };
 const CUSTOM_DENSITY_MIN=-64,CUSTOM_DENSITY_MAX=1870,CUSTOM_DENSITY_DEFAULT=-64,CUSTOM_DENSITY_VERSION=2;
 
@@ -1035,8 +1045,17 @@ subjectSelect.addEventListener("change",async()=>{if(state.active){const preset=
 window.addEventListener("subject-selected",(event)=>{if(state.active)loadVolume(event.detail?.subject||subjectSelect.value);});
 presetSelect.addEventListener("change",()=>{applyPreset(presetSelect.value);saveMedicalView();});
 function syncInteractionState(){
+  const [azimuth,inclination]=planeAnglesFromNormal(state.planeNormal);
+  planeAzimuthInput.value=azimuth.toFixed(1);planeInclinationInput.value=inclination.toFixed(1);planeDepthInput.value=state.planeOffset.toFixed(3);
+  planeAzimuthValue.textContent=`${azimuth.toFixed(1)}°`;planeInclinationValue.textContent=`${inclination.toFixed(1)}°`;planeDepthValue.textContent=state.planeOffset.toFixed(3);
   medicalWorkspace.dataset.planeOffset=state.planeOffset.toFixed(6);medicalWorkspace.dataset.planeRotateX=state.planeRotateX.toFixed(6);medicalWorkspace.dataset.planeRotateY=state.planeRotateY.toFixed(6);medicalWorkspace.dataset.planeNormal=state.planeNormal.map((value)=>value.toFixed(6)).join(",");medicalWorkspace.dataset.cameraPan=state.cameraPan.map((value)=>value.toFixed(6)).join(",");medicalWorkspace.dataset.cameraZoom=state.zoom.toFixed(6);medicalWorkspace.dataset.cameraYaw=state.yaw.toFixed(6);medicalWorkspace.dataset.cameraPitch=state.pitch.toFixed(6);
 }
+for(const control of [planeAzimuthInput,planeInclinationInput])control.addEventListener("input",()=>{state.planeNormal=planeNormalFromAngles(Number(planeAzimuthInput.value),Number(planeInclinationInput.value));syncInteractionState();saveMedicalView();scheduleRender(true);});
+planeDepthInput.addEventListener("input",()=>{state.planeOffset=clamp(Number(planeDepthInput.value),-1,1);syncInteractionState();saveMedicalView();scheduleRender(true);});
+function toggleMedicalGuide(show){medicalControlsGuide.hidden=!show;medicalInfoButton.setAttribute("aria-expanded",String(show));medicalInfoButton.setAttribute("aria-label",show?"Hide viewer controls":"Show viewer controls");}
+medicalInfoButton.addEventListener("click",()=>toggleMedicalGuide(medicalControlsGuide.hidden));
+document.addEventListener("pointerdown",(event)=>{if(!medicalControlsGuide.hidden&&!medicalControlsGuide.contains(event.target)&&event.target!==medicalInfoButton)toggleMedicalGuide(false);});
+document.addEventListener("keydown",(event)=>{if(event.key==="Escape"&&!medicalControlsGuide.hidden)toggleMedicalGuide(false);});
 customDensityInput.addEventListener("input",()=>{state.customDensity=clamp(Number(customDensityInput.value),CUSTOM_DENSITY_MIN,CUSTOM_DENSITY_MAX);saveCustom();uploadTransfer();});
 buildButton.addEventListener("click",buildVolume);
 document.querySelector("#transfer-reset").addEventListener("click",()=>applyPreset(presetSelect.value==="custom"?"bone":presetSelect.value,false));
@@ -1048,10 +1067,56 @@ transferCanvas.addEventListener("pointermove",(event)=>{if(!state.transferDraggi
 transferCanvas.addEventListener("pointerup",(event)=>{state.transferDragging=false;transferCanvas.releasePointerCapture(event.pointerId);state.opacityPoints.sort((a,b)=>a.hu-b.hu);state.selectedOpacity=-1;saveCustom();drawTransferEditor();});
 transferCanvas.addEventListener("dblclick",(event)=>{if(state.opacityPoints.length<=2)return;const value=transferPoint(event),rect=transferCanvas.getBoundingClientRect();let best=-1,distance=Infinity;state.opacityPoints.forEach((point,index)=>{const d=Math.hypot(((point.hu+1024)/4095-value.x)*rect.width,(1-point.opacity-value.y)*rect.height);if(d<distance){best=index;distance=d;}});if(distance<15){state.opacityPoints.splice(best,1);saveCustom();uploadTransfer();}});
 
-let drag=null;
-canvases.volume.addEventListener("pointerdown",(event)=>{drag={x:event.clientX,y:event.clientY,yaw:state.yaw,pitch:state.pitch,pan:[...state.cameraPan],planeX:state.planeRotateX,planeY:state.planeRotateY,planeNormal:[...state.planeNormal],camera:cameraBasis(),planeOffset:state.planeOffset,mode:event.metaKey?"position":event.ctrlKey?"plane":event.shiftKey?"pan":"camera"};try{canvases.volume.setPointerCapture(event.pointerId);}catch{}});
-canvases.volume.addEventListener("pointermove",(event)=>{if(!drag)return;const deltaX=event.clientX-drag.x,deltaY=event.clientY-drag.y;if(drag.mode==="position")state.planeOffset=clamp(drag.planeOffset+deltaY*.003,-1,1);else if(drag.mode==="plane"){const radians=Math.PI/180,aroundUp=rotateAroundAxis(drag.planeNormal,drag.camera.up,deltaX*.35*radians);state.planeNormal=rotateAroundAxis(aroundUp,drag.camera.right,deltaY*.35*radians);state.planeRotateY=drag.planeY+deltaX*.35;state.planeRotateX=clamp(drag.planeX+deltaY*.35,-180,180);}else if(drag.mode==="pan"){const speed=.002/Math.max(state.zoom,.3);state.cameraPan[0]=drag.pan[0]-deltaX*speed;state.cameraPan[1]=drag.pan[1]-deltaY*speed;}else{state.yaw=drag.yaw+deltaX*.008;state.pitch=clamp(drag.pitch+deltaY*.008,-1.45,1.45);}syncInteractionState();scheduleRender(true);});
-canvases.volume.addEventListener("pointerup",(event)=>{if(!drag)return;drag=null;if(canvases.volume.hasPointerCapture(event.pointerId))canvases.volume.releasePointerCapture(event.pointerId);saveMedicalView();scheduleRender();});
+let drag=null,pinch=null;
+const touchPointers=new Map();
+function makeDrag(event){return{id:event.pointerId,x:event.clientX,y:event.clientY,yaw:state.yaw,pitch:state.pitch,pan:[...state.cameraPan],planeX:state.planeRotateX,planeY:state.planeRotateY,planeNormal:[...state.planeNormal],camera:cameraBasis(),planeOffset:state.planeOffset,mode:event.metaKey?"position":event.ctrlKey?"plane":event.shiftKey?"pan":"camera"};}
+function rebaseTouches(){
+  const touches=[...touchPointers.values()];drag=null;pinch=null;
+  if(touches.length===1){drag=makeDrag({...touches[0],metaKey:false,ctrlKey:false,shiftKey:false});return;}
+  if(touches.length<2)return;
+  const [first,second]=touches;
+  pinch={x:(first.clientX+second.clientX)/2,y:(first.clientY+second.clientY)/2,distance:Math.max(4,Math.hypot(first.clientX-second.clientX,first.clientY-second.clientY)),zoom:state.zoom,pan:[...state.cameraPan]};
+}
+function moveDrag(event){
+  if(!drag||drag.id!==event.pointerId)return;
+  const deltaX=event.clientX-drag.x,deltaY=event.clientY-drag.y;
+  if(drag.mode==="position")state.planeOffset=clamp(drag.planeOffset+deltaY*.003,-1,1);
+  else if(drag.mode==="plane"){const radians=Math.PI/180,aroundUp=rotateAroundAxis(drag.planeNormal,drag.camera.up,deltaX*.35*radians);state.planeNormal=rotateAroundAxis(aroundUp,drag.camera.right,deltaY*.35*radians);state.planeRotateY=drag.planeY+deltaX*.35;state.planeRotateX=clamp(drag.planeX+deltaY*.35,-180,180);}
+  else if(drag.mode==="pan"){const speed=.002/Math.max(state.zoom,.3);state.cameraPan[0]=drag.pan[0]-deltaX*speed;state.cameraPan[1]=drag.pan[1]-deltaY*speed;}
+  else{state.yaw=drag.yaw+deltaX*.008;state.pitch=clamp(drag.pitch+deltaY*.008,-1.45,1.45);}
+  syncInteractionState();scheduleRender(true);
+}
+function movePinch(){
+  if(!pinch)return;
+  const [first,second]=[...touchPointers.values()];if(!second)return;
+  const x=(first.clientX+second.clientX)/2,y=(first.clientY+second.clientY)/2;
+  const distance=Math.max(4,Math.hypot(first.clientX-second.clientX,first.clientY-second.clientY));
+  const speed=.002/Math.max(pinch.zoom,.3);
+  state.cameraPan[0]=pinch.pan[0]-(x-pinch.x)*speed;state.cameraPan[1]=pinch.pan[1]-(y-pinch.y)*speed;
+  state.zoom=clamp(pinch.zoom*distance/pinch.distance,.3,8);
+  syncInteractionState();scheduleRender(true);
+}
+canvases.volume.addEventListener("pointerdown",(event)=>{
+  if(event.pointerType==="touch"){touchPointers.set(event.pointerId,{pointerId:event.pointerId,clientX:event.clientX,clientY:event.clientY});rebaseTouches();}
+  else if(!touchPointers.size)drag=makeDrag(event);
+  try{canvases.volume.setPointerCapture(event.pointerId);}catch{}
+});
+canvases.volume.addEventListener("pointermove",(event)=>{
+  if(event.pointerType==="touch"){
+    if(!touchPointers.has(event.pointerId))return;
+    touchPointers.set(event.pointerId,{pointerId:event.pointerId,clientX:event.clientX,clientY:event.clientY});
+    if(touchPointers.size>=2)movePinch();else moveDrag(event);
+  }else if(!touchPointers.size)moveDrag(event);
+});
+function finishVolumePointer(event){
+  if(event.pointerType==="touch"){
+    if(!touchPointers.delete(event.pointerId))return;
+    rebaseTouches();if(!touchPointers.size){saveMedicalView();scheduleRender();}
+  }else if(drag?.id===event.pointerId){drag=null;saveMedicalView();scheduleRender();}
+  try{if(canvases.volume.hasPointerCapture(event.pointerId))canvases.volume.releasePointerCapture(event.pointerId);}catch{}
+}
+canvases.volume.addEventListener("pointerup",finishVolumePointer);
+canvases.volume.addEventListener("pointercancel",finishVolumePointer);
 canvases.volume.addEventListener("wheel",(event)=>{event.preventDefault();state.zoom=clamp(state.zoom*Math.exp(-event.deltaY*.001),.3,8);syncInteractionState();saveMedicalView();scheduleRender(true);},{passive:false});
 canvases.volume.addEventListener("contextmenu",(event)=>event.preventDefault());
 window.addEventListener("keydown",(event)=>{if(!state.active||event.metaKey||event.ctrlKey||event.altKey||event.target?.matches?.("input, select, button, textarea"))return;const key=event.key.toLowerCase();if(!"wasdqe".includes(key))return;event.preventDefault();state.cameraKeys.add(key);state.cameraMotionTime=performance.now();scheduleRender(true);});

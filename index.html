@@ -154,9 +154,24 @@
         <aside class="medical-preset-overlay overlay-panel">
           <label>Preset<select id="volume-preset" aria-label="Transfer-function preset"><option value="bone">Bone</option><option value="soft">Soft tissue</option><option value="lung">Lung</option><option value="body">Skin / body</option><option value="mip">MIP</option><option value="custom">Custom</option></select></label>
           <label id="custom-density-control" class="custom-density-control" hidden>Density <input id="custom-density" type="range" min="-64" max="1870" step="1" value="-64" /><output id="custom-density-value">−64 HU</output></label>
+          <div class="cross-section-controls" role="group" aria-label="Cross-section plane">
+            <span>Cross-section</span>
+            <label>Azimuth <input id="plane-azimuth" type="range" min="-180" max="180" step="0.1" value="0" /><output id="plane-azimuth-value" for="plane-azimuth">0°</output></label>
+            <label>Inclination <input id="plane-inclination" type="range" min="-90" max="90" step="0.1" value="90" /><output id="plane-inclination-value" for="plane-inclination">90°</output></label>
+            <label>Depth <input id="plane-depth" type="range" min="-1" max="1" step="0.001" value="0" /><output id="plane-depth-value" for="plane-depth">0.000</output></label>
+          </div>
           <output id="volume-message" aria-live="polite">Opening volume…</output>
           <button id="volume-more-detail" class="secondary" type="button" hidden>Download more detail</button>
           <button id="volume-retry" class="secondary" type="button" hidden>Retry download</button>
+        </aside>
+
+        <button id="medical-info-toggle" class="medical-info-toggle" type="button" aria-label="Show viewer controls" aria-controls="medical-controls-guide" aria-expanded="false">i</button>
+        <aside id="medical-controls-guide" class="medical-controls-guide overlay-panel" aria-label="Viewer controls" hidden>
+          <h2>Viewer controls</h2>
+          <p><strong>Touch:</strong> one finger rotates the camera; two fingers pan and pinch to zoom.</p>
+          <p><strong>Mouse:</strong> drag to rotate; Shift-drag to pan; scroll to zoom. Ctrl-drag tilts the plane; Command-drag moves its depth.</p>
+          <p><strong>Keyboard:</strong> W/A/S/D move the camera; Q/E move vertically.</p>
+          <p>Azimuth and inclination orient the cross-section plane. Depth moves it from −1 to 1 through the volume.</p>
         </aside>
 
         <aside id="medical-knot-editor-host" hidden></aside>

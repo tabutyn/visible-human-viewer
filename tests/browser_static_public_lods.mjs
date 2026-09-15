@@ -94,12 +94,27 @@ try{
   }
   await waitFor("document.querySelector('#medical-workspace')?.dataset.renderedRgbLevel==='2'");await new Promise(resolve=>setTimeout(resolve,800));
   const l2Requests=requests.filter(item=>/^\/v1\/objects\//.test(item.pathname));if(!failureOnce){assert.equal(l2Requests.length,8);assert.match(await evaluate("document.querySelector('#volume-more-detail').textContent"),/147 MiB/);}const l2=await screenshot("public-l2.png");
+  const originalPlane=await evaluate("({azimuth:document.querySelector('#plane-azimuth').value,inclination:document.querySelector('#plane-inclination').value,depth:document.querySelector('#plane-depth').value})");
+  await send("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:2,mobile:true});await new Promise(resolve=>setTimeout(resolve,350));
+  assert.equal(await evaluate("Math.round(document.querySelector('#volume-canvas').getBoundingClientRect().width)"),390,"Mobile canvas should fit the screen");
+  const touchBefore=await evaluate("({pan:document.querySelector('#medical-workspace').dataset.cameraPan,zoom:Number(document.querySelector('#medical-workspace').dataset.cameraZoom)})");
+  await evaluate("(()=>{const c=document.querySelector('#volume-canvas'),r=c.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;const p=(kind,id,px,py)=>c.dispatchEvent(new PointerEvent(kind,{bubbles:true,pointerType:'touch',pointerId:id,clientX:px,clientY:py}));p('pointerdown',31,x-60,y);p('pointerdown',32,x+60,y);p('pointermove',31,x+10,y+50);p('pointermove',32,x+70,y+50);p('pointerup',31,x+10,y+50);p('pointerup',32,x+70,y+50);})()");
+  const touchAfter=await evaluate("({pan:document.querySelector('#medical-workspace').dataset.cameraPan,zoom:Number(document.querySelector('#medical-workspace').dataset.cameraZoom)})");
+  assert.notEqual(touchAfter.pan,touchBefore.pan,"Two fingers should pan");assert.ok(touchAfter.zoom<touchBefore.zoom*.75,"Pinch should zoom out");
+  await evaluate("(()=>{for(const [id,value] of [['plane-azimuth','45'],['plane-inclination','20'],['plane-depth','0.3']]){const input=document.getElementById(id);input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));}})()");
+  assert.equal(await evaluate("document.querySelector('#medical-workspace').dataset.planeOffset"),"0.300000");
+  assert.match(await evaluate("document.querySelector('#plane-azimuth-value').textContent"),/45/);
+  await evaluate("document.querySelector('#medical-info-toggle').click()");assert.equal(await evaluate("document.querySelector('#medical-controls-guide').hidden"),false);assert.equal(await evaluate("document.querySelector('#medical-info-toggle').getAttribute('aria-expanded')"),"true");
+  const mobileGuide=await screenshot("public-mobile-controls.png");
+  await evaluate("document.querySelector('#medical-info-toggle').click()");
+  await evaluate(`(()=>{const values=${JSON.stringify(originalPlane)};for(const [id,value] of [['plane-azimuth',values.azimuth],['plane-inclination',values.inclination],['plane-depth',values.depth]]){const input=document.getElementById(id);input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));}})()`);
+  await send("Emulation.setDeviceMetricsOverride",{width:1440,height:1000,deviceScaleFactor:1,mobile:false});await new Promise(resolve=>setTimeout(resolve,350));
   if(failureOnce){assert.equal(await evaluate("document.querySelector('#volume-retry').hidden"),true);assert.deepEqual(exceptions,[]);assert.deepEqual(gpuErrors,[]);console.log(JSON.stringify({passed:true,corruptRetry:corruptOnce&&retryShown,interruptedRetry:interruptOnce&&retryShown,transportAutoRetry:interruptOnce&&!retryShown,objectRequests:l2Requests.length,screenshot:l2},null,2));process.exitCode=0;}
   else{
   await evaluate("document.querySelector('#volume-more-detail').click()");await waitFor("document.querySelector('#medical-workspace')?.dataset.renderedRgbLevel==='1'");await new Promise(resolve=>setTimeout(resolve,800));assert.equal(requests.filter(item=>/^\/v1\/objects\//.test(item.pathname)).length,72);assert.match(await evaluate("document.querySelector('#volume-more-detail').textContent"),/1\.12 GiB/);const l1=await screenshot("public-l1.png");
   await evaluate("document.querySelector('#volume-more-detail').click()");await waitFor("document.querySelector('#medical-workspace')?.dataset.renderedRgbLevel==='0'");await new Promise(resolve=>setTimeout(resolve,800));const l0=await screenshot("public-l0.png");
   assert.deepEqual(exceptions,[]);assert.deepEqual(gpuErrors,[]);assert.ok(!requests.some(item=>/layers|review/.test(item.pathname)));assert.ok(requests.every(item=>["GET","HEAD"].includes(item.method)));
-  console.log(JSON.stringify({passed:true,manifestSha,objectRequests:requests.filter(item=>item.pathname.startsWith("/v1/objects/")).length,performance:await evaluate("document.querySelector('#volume-performance').textContent"),screenshots:{l2,l1,l0}},null,2));
+  console.log(JSON.stringify({passed:true,manifestSha,objectRequests:requests.filter(item=>item.pathname.startsWith("/v1/objects/")).length,performance:await evaluate("document.querySelector('#volume-performance').textContent"),screenshots:{l2,l1,l0,mobileGuide}},null,2));
   }
   }
 }finally{chrome.kill();server.close();for(const item of pending.values())clearTimeout(item.timer);}

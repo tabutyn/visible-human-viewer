@@ -127,7 +127,7 @@ option { color: #111; background: white; }
   z-index: 4;
   top: 16px;
   left: 16px;
-  width: 220px;
+  width: 258px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -136,6 +136,16 @@ option { color: #111; background: white; }
 .medical-preset-overlay label { display: grid; grid-template-columns: 48px 1fr; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; font-weight: 700; }
 .medical-preset-overlay select { height: 30px; }
 .medical-preset-overlay .custom-density-control { grid-template-columns: 48px 1fr 52px; }
+.cross-section-controls { display: grid; gap: 7px; padding-top: 8px; border-top: 1px solid var(--line); }
+.cross-section-controls > span { color: var(--text); font-size: 10px; font-weight: 700; }
+.medical-preset-overlay .cross-section-controls label { grid-template-columns: 70px minmax(0, 1fr) 44px; }
+.cross-section-controls input { width: 100%; margin: 0; accent-color: var(--accent); }
+.cross-section-controls output { color: var(--text); text-align: right; font-size: 10px; font-variant-numeric: tabular-nums; }
+.medical-info-toggle { position: absolute; z-index: 6; right: 16px; bottom: 42px; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; color: var(--text); background: var(--panel); font: 700 20px/1 Georgia, serif; }
+.medical-controls-guide { position: absolute; z-index: 6; right: 16px; bottom: 90px; width: min(310px, calc(100vw - 32px)); max-height: calc(100vh - 106px); overflow: auto; padding: 14px 16px; font-size: 11px; line-height: 1.5; }
+.medical-controls-guide h2 { margin: 0 0 8px; font-size: 14px; }
+.medical-controls-guide p { margin: 8px 0 0; color: var(--muted); }
+.medical-controls-guide strong { color: var(--text); }
 .custom-density-control input { width: 100%; accent-color: var(--accent); }
 .custom-density-control output { color: var(--text); text-align: right; font-variant-numeric: tabular-nums; }
 .compact-button { min-height: 28px; padding: 4px 8px; font-size: 10px; }
@@ -260,4 +270,10 @@ details > * + * { margin-top: 7px; }
   .controls-row { grid-template-columns: 1fr 1fr 1fr 1fr; }
   .controls-row .toggle-control, .blend-control { display: none !important; }
   .medical-workspace { padding: 0; }
+}
+@media (max-width: 650px) {
+  body[data-active-tab="medical"] .viewer-shell { min-width: 0; min-height: 0; }
+  .medical-preset-overlay { top: 10px; left: 10px; width: min(246px, calc(100vw - 20px)); max-height: calc(100vh - 80px); overflow: auto; }
+  .medical-info-toggle { right: 12px; bottom: 38px; }
+  .medical-controls-guide { right: 12px; bottom: 86px; }
 }
