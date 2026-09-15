@@ -1,13 +1,17 @@
-[
-  {
-    "AllowedOrigins": [
-      "https://visiblehuman.ballrollergames.com",
-      "http://127.0.0.1:4173",
-      "http://localhost:4173"
-    ],
-    "AllowedMethods": ["GET", "HEAD"],
-    "AllowedHeaders": [],
-    "ExposeHeaders": ["Content-Length", "Content-Encoding", "ETag"],
-    "MaxAgeSeconds": 86400
-  }
-]
+{
+  "rules": [
+    {
+      "allowed": {
+        "origins": [
+          "https://visiblehuman.ballrollergames.com",
+          "http://127.0.0.1:4173",
+          "http://localhost:4173"
+        ],
+        "methods": ["GET", "HEAD"],
+        "headers": []
+      },
+      "exposeHeaders": ["Content-Length", "Content-Encoding", "ETag"],
+      "maxAgeSeconds": 86400
+    }
+  ]
+}
