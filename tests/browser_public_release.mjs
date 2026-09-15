@@ -56,7 +56,7 @@ async function waitFor(condition){
   throw new Error(`Timed out: ${condition}; ${await evaluate("document.querySelector('#volume-message')?.textContent")}`);
 }
 const pause=milliseconds=>evaluate(`new Promise(resolve=>setTimeout(resolve,${milliseconds}))`);
-const datasetRequests=items=>items.filter(item=>/\/api\/(subjects|review)|\/(viewer\.js|medical-renderer\.mjs)/.test(item.url));
+const datasetRequests=items=>items.filter(item=>/\/api\/(subjects|review)|\/v1\/(releases|objects)\/|\/(viewer\.js|medical-renderer\.mjs)/.test(item.url));
 async function screenshot(name){
   const file=join(temporary,name),capture=await send("Page.captureScreenshot",{format:"png"});
   await writeFile(file,Buffer.from(capture.data,"base64"));return file;
@@ -92,9 +92,13 @@ try{
   assert.equal(await evaluate("document.querySelector('#medical-workspace').dataset.firstRenderedRgbLevel"),"2");
   assert.equal(await evaluate("document.querySelector('#medical-workspace').dataset.rgbLevel"),"2");
   assert.equal(await evaluate("getComputedStyle(document.querySelector('.calibration-panel')).display"),"none");
-  const bricks=requests.filter(item=>/\/bricks\//.test(item.url));
+  const staticRelease=await evaluate("Boolean(window.visibleHumanReleaseData)");
+  const bricks=requests.filter(item=>staticRelease?/\/v1\/objects\//.test(item.url):/\/bricks\//.test(item.url));
   assert.equal(bricks.length,8,"Only four CT + four RGB L2 bricks are downloaded");
-  assert.ok(bricks.every(item=>/\/bricks\/2\//.test(item.url)),"No automatic finer-detail download");
+  if(staticRelease){
+    const previewUrls=new Set(await evaluate("['ct','rgb'].flatMap(modality=>window.visibleHumanReleaseData.manifest[modality].levels.find(level=>level.level===2).bricks.map(brick=>brick.url))"));
+    assert.ok(bricks.every(item=>previewUrls.has(item.url)),"No automatic finer-detail download");
+  }else assert.ok(bricks.every(item=>/\/bricks\/2\//.test(item.url)),"No automatic finer-detail download");
   assert.ok(!requests.some(item=>/\/layers\//.test(item.url)),"Normal 3D does not load photographic slices");
   await evaluate("document.querySelector('#alignment-tab').click();document.querySelector('#align3d-tab').click()");
   assert.equal(await evaluate("document.body.dataset.activeTab"),"medical");

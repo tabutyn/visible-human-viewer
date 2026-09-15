@@ -50,12 +50,25 @@ export function transferLut(opacityPoints, colorPoints, size = 4096, huMinimum =
 
 export function brickOpacity(bricks, lut, huMinimum = -1024) {
   return Uint8Array.from(bricks, (brick) => {
+    // Older immutable public manifests omit per-brick HU bounds. An unknown
+    // brick must be visited, not silently culled from the volume ray.
+    if (!validHuBounds(brick)) return 255;
     const start = clamp(Math.floor(brick.min_hu - huMinimum), 0, lut.length / 4 - 1);
     const end = clamp(Math.ceil(brick.max_hu - huMinimum), 0, lut.length / 4 - 1);
     let maximum = 0;
     for (let index = start; index <= end; index++) maximum = Math.max(maximum, lut[index * 4 + 3]);
     return maximum;
   });
+}
+
+function validHuBounds(brick) {
+  return Number.isFinite(brick?.min_hu) && Number.isFinite(brick?.max_hu) && brick.min_hu <= brick.max_hu;
+}
+
+export function brickDensityMask(bricks, density) {
+  return Uint8Array.from(bricks, (brick) =>
+    !validHuBounds(brick) || (brick.min_hu <= density && density <= brick.max_hu) ? 255 : 0,
+  );
 }
 
 export function planeAspect(axis, dimensions, spacing) {

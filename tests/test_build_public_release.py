@@ -76,6 +76,7 @@ def make_fixture(tmp_path):
                     "extent": [1, 1, 1],
                     "bytes": len(decoded),
                     "sha256": decoded_sha,
+                    **({"min_hu": -1024, "max_hu": 3071} if modality == "ct" else {}),
                 })
             levels.append({
                 "level": level,
@@ -141,6 +142,11 @@ def test_release_is_deterministic_male_only_and_excludes_slices(tmp_path):
     assert first["manifest"]["inputs"]["valid_reviewed_anchor_count"] == 1
     assert first["manifest"]["ct"]["hu_offset"] == 1024
     assert first["manifest"]["ct"]["slice_frames"] == list(range(8))
+    assert all(
+        brick["min_hu"] == -1024 and brick["max_hu"] == 3071
+        for level in first["manifest"]["ct"]["levels"]
+        for brick in level["bricks"]
+    )
     encoded = Path(first["manifest_path"]).read_text()
     assert str(processed) not in encoded
     assert '"female"' not in encoded
@@ -166,6 +172,20 @@ def test_release_refuses_stale_rgb_and_corrupt_delivery(tmp_path):
     (delivery / entry["file"]).write_bytes(b"not gzip")
     with pytest.raises(ValueError, match="Compressed delivery hash differs"):
         build_release(processed, delivery, tmp_path / "corrupt-output", "https://visiblehuman-data.ballrollergames.com")
+
+
+def test_release_refuses_missing_ct_brick_hu_bounds(tmp_path):
+    processed, delivery = make_fixture(tmp_path)
+    ct_path = processed / "male/volume-v1/manifest.json"
+    ct = json.loads(ct_path.read_text())
+    del ct["levels"][2]["bricks"][0]["min_hu"]
+    ct_hash = write_json(ct_path, ct)
+    rgb_path = processed / "male/rgb-volume-v1/manifest.json"
+    rgb = json.loads(rgb_path.read_text())
+    rgb["inputs"]["ct_volume_manifest_sha256"] = ct_hash
+    write_json(rgb_path, rgb)
+    with pytest.raises(ValueError, match="HU bounds"):
+        build_release(processed, delivery, tmp_path / "missing-hu-output", "https://visiblehuman-data.ballrollergames.com")
 
 
 def test_release_refuses_incomplete_lod_wrong_encoding_and_changed_brick(tmp_path):

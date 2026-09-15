@@ -77,7 +77,7 @@ def validate_inputs(subject: Path, ct_manifest: dict, rgb_manifest: dict) -> dic
     return actual
 
 
-def verified_brick(processed: Path, delivery: Path, index: dict, subject: Path, folder: str, brick: dict, base: str) -> dict:
+def verified_brick(processed: Path, delivery: Path, index: dict, subject: Path, folder: str, brick: dict, base: str, include_hu_bounds: bool = False) -> dict:
     source_candidate = subject / folder / brick["file"]
     if source_candidate.is_symlink():
         raise ValueError(f"Unsafe or missing source brick: {brick['file']}")
@@ -103,13 +103,19 @@ def verified_brick(processed: Path, delivery: Path, index: dict, subject: Path, 
     if len(decoded) != brick.get("bytes") or digest_bytes(decoded) != brick.get("sha256"):
         raise ValueError(f"Gzip round-trip differs: {relative}")
     object_key = f"v1/objects/{entry['sha256']}.gz"
-    return {
+    record = {
         "x": int(brick["x"]), "y": int(brick["y"]), "z": int(brick["z"]),
         "extent": [int(value) for value in brick["extent"]],
         "bytes": int(brick["bytes"]), "sha256": brick["sha256"],
         "transfer_bytes": int(entry["bytes"]), "transfer_sha256": entry["sha256"],
         "object_key": object_key, "url": f"{base}/{object_key}",
     }
+    if include_hu_bounds:
+        low, high = brick.get("min_hu"), brick.get("max_hu")
+        if type(low) is not int or type(high) is not int or low > high:
+            raise ValueError("CT brick HU bounds are missing or invalid")
+        record.update(min_hu=low, max_hu=high)
+    return record
 
 
 def volume_record(processed: Path, delivery: Path, index: dict, subject: Path, folder: str, source: dict, base: str, modality: str) -> dict:
@@ -121,7 +127,7 @@ def volume_record(processed: Path, delivery: Path, index: dict, subject: Path, f
         level = found[number]
         if len(level.get("bricks", [])) != EXPECTED_BRICKS[number]:
             raise ValueError(f"{modality} L{number} has {len(level.get('bricks', []))} bricks; expected {EXPECTED_BRICKS[number]}")
-        bricks = [verified_brick(processed, delivery, index, subject, folder, brick, base) for brick in level["bricks"]]
+        bricks = [verified_brick(processed, delivery, index, subject, folder, brick, base, modality == "CT") for brick in level["bricks"]]
         levels.append({
             "level": number, "factor": int(level.get("factor", 2**number)),
             "dimensions": [int(value) for value in level["dimensions"]],

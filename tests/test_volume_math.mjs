@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   GIB,
+  brickDensityMask,
   brickOpacity,
   canvasPlaneScale,
   chooseVolumeLevel,
@@ -27,6 +28,17 @@ test("transfer LUT interpolates HU opacity and colour", () => {
   assert.ok(lut[1024*4+3]>=127&&lut[1024*4+3]<=128);
   assert.deepEqual([...lut.slice(4095*4,4095*4+4)],[255,128,64,255]);
   assert.deepEqual([...brickOpacity([{min_hu:-1024,max_hu:-1024},{min_hu:0,max_hu:100}],lut)],[0,Math.max(...Array.from({length:101},(_,i)=>lut[(1024+i)*4+3]))]);
+});
+
+test("unknown CT brick HU bounds never cull released anatomy", () => {
+  const lut=transferLut(
+    [{hu:-1024,opacity:0},{hu:3071,opacity:1}],
+    [{hu:-1024,color:[0,0,0]},{hu:3071,color:[1,1,1]}],
+  );
+  const bricks=[{}, {min_hu:-300,max_hu:300}, {min_hu:400,max_hu:600}, {min_hu:600,max_hu:400}];
+  assert.equal(brickOpacity(bricks,lut)[0],255);
+  assert.equal(brickOpacity(bricks,lut)[3],255);
+  assert.deepEqual([...brickDensityMask(bricks,-64)],[255,255,0,255]);
 });
 
 test("MPR plane scale preserves physical aspect", () => {

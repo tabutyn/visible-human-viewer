@@ -3,6 +3,7 @@ import {
   HARD_MEMORY_LIMIT,
   TARGET_MEMORY_LIMIT,
   MAX_VOLUME_BYTES,
+  brickDensityMask,
   brickOpacity,
   chooseVolumeLevel,
   clamp,
@@ -462,7 +463,7 @@ function dilatedBrickMask(level,values) {
 }
 
 function activeBrickMask(level) {
-  if(presetSelect.value==="custom")return dilatedBrickMask(level,Uint8Array.from(level.bricks,(brick)=>brick.min_hu<=state.customDensity&&brick.max_hu>=state.customDensity?255:0));
+  if(presetSelect.value==="custom")return dilatedBrickMask(level,brickDensityMask(level.bricks,state.customDensity));
   return dilatedBrickMask(level,brickOpacity(level.bricks,makeLut()));
 }
 
